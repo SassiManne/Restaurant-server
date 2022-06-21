@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import usersRoutes from './routes/users.js';
+import menuRoutes from './routes/menu.js';
 
 
 ///////set up the Server//////////
@@ -11,7 +11,7 @@ const PORT = 8080;
 
 app.use(bodyParser.json());
 
-app.use('/api/users', usersRoutes);
+app.use('/api/menu', menuRoutes);
 
 app.get('/', (req, res) => res.send('welcome to the restaurant'));
 
