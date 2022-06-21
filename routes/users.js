@@ -39,15 +39,13 @@ router.get('/:firstName', (req, res) => {
 //POST request
 router.post('/', (req, res) => {
     let user = req.body;
-    let userJson = fs.readFileSync('./dataBase/user.json');
-    let pars = JSON.parse(userJson);
+    let pars = getData();
     pars.push(user);
 
     let newData = JSON.stringify(pars);
-    res.json(pars)
     fs.writeFileSync('./dataBase/user.json', newData);
 
-    res.send(`user with the name ${user.firstName} added to the database!`);
+    return res.send(`user with the name ${req.body.firstName} added to the database!`);
 });
 
 
@@ -59,25 +57,21 @@ router.delete('/:firstName', (req, res) => {
 
     fs.writeFileSync('./dataBase/user.json', JSON.stringify(allNewUsers));
 
-    res.send(`the user with the name ${firstName} deleted from the database!`);
+    return res.send(`the user with the name ${req.params.firstName} deleted from the database!`);
 });
 
 
 //UPDATE user by "firstName"
 router.patch('/:firstName', (req, res) => {
-    const firstName = req.params.firstName;
-    const { lastName, age } = req.body;
+    const { firstName } = req.params;
     let allUsers = getData();
+    
+    let tempUsers = allUsers.filter((user) => user.firstName !== firstName);
+    req.body.firstName = req.params.firstName
+    tempUsers.push(req.body)
+    fs.writeFileSync('./dataBase/user.json', JSON.stringify(tempUsers));
 
-    let user = allUsers.find((user) => user.firstName === firstName);
-
-    if (firstName) user.firstName = firstName;
-    if (lastName) user.lastName = lastName;
-    if (age) user.age = age;
-    allUsers.push(user)
-    fs.writeFileSync('./dataBase/user.json', JSON.stringify(user));
-
-res.send(`the user with the name ${user.firstName} updated from the database!`);
+    return res.send(`the user with the name ${req.body.firstName} updated from the database!`);
 
 });
 

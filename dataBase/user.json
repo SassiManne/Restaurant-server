@@ -1,1 +1,7 @@
-"[object Object][object Object],[object Object]"
+[
+    {
+        "firstName": "gggg",
+        "lastName": "man",
+        "age": 888
+    }
+]
