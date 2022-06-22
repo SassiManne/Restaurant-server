@@ -31,7 +31,6 @@ router.get('/:name', (req, res) => {
     let dishByName = getData();
 
     const foundDish = dishByName.find((dish) => dish.name === name);
-
     res.send(foundDish);
 });
 
@@ -67,7 +66,7 @@ router.patch('/:name', (req, res) => {
     let allMenu = getData();
     
     let tempMenu = allMenu.filter((dish) => dish.name !== name);
-    req.body.name = req.params.name
+    req.body.name = name
     tempMenu.push(req.body)
     fs.writeFileSync('./dataBase/menu.json', JSON.stringify(tempMenu));
 

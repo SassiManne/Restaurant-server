@@ -1,0 +1,32 @@
+[
+    {
+        "tableName": "Corner1",
+        "capacity": "4",
+        "GroupSeqNum": null
+    },
+    {
+        "tableName": "Corner2",
+        "capacity": "6",
+        "GroupSeqNum": 4567
+    },
+    {
+        "tableName": "Window 1",
+        "capacity": "2",
+        "GroupSeqNum": 4570
+    },
+    {
+        "tableName": "Window 2",
+        "capacity": "2",
+        "GroupSeqNum": null
+    },
+    {
+        "tableName": "Corner7",
+        "capacity": "7",
+        "GroupSeqNum": null
+    },
+    {
+        "tableName": "bar",
+        "capacity": "8",
+        "GroupSeqNum": 444
+    }
+]

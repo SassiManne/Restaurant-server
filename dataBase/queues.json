@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Levy",
+        "size": "3",
+        "queue": "tobesitted",
+        "GroupSeqNo": "5556",
+        "table": null
+    },
+    {
+        "name": "Gad",
+        "size": "2",
+        "queue": "tobesitted",
+        "GroupSeqNo": "1111",
+        "table": null
+    },
+    {
+        "name": "Dan",
+        "size": "4",
+        "queue": "tobesitted",
+        "GroupSeqNo": "4343",
+        "table": null
+    },
+    {
+        "name": "Menashe",
+        "size": "1",
+        "queue": "sitting",
+        "GroupSeqNo": "4444",
+        "table": "Corner 1"
+    },
+    {
+        "name": "Benjamin",
+        "size": "4",
+        "queue": "awaitingbill",
+        "GroupSeqNo": "5555",
+        "table": null
+    }
+]

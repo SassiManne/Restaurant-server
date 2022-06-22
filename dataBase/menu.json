@@ -1,11 +1,6 @@
 [
     {
         "category": "starter",
-        "name": "GefilteFish",
-        "price": "3.1"
-    },
-    {
-        "category": "starter",
         "name": "ChoppedLiver",
         "price": "7"
     },
@@ -18,11 +13,6 @@
         "category": "Soups",
         "name": "ChickenSoup",
         "price": "3"
-    },
-    {
-        "category": "Soups",
-        "name": "Borscht",
-        "price": "2"
     },
     {
         "category": "Main Course",
@@ -53,5 +43,15 @@
         "category": "Main Course",
         "name": "Schnitzel",
         "price": "15"
+    },
+    {
+        "category": "starter Course",
+        "name": "GefilteFish",
+        "price": "15"
+    },
+    {
+        "category": "Soups",
+        "name": "Borscht",
+        "price": "56"
     }
 ]
