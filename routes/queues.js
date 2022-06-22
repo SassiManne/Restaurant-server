@@ -36,10 +36,24 @@ router.get('/:GroupSeqNo', (req, res) => {
 });
 
 
+//GET group by "queue status"
+router.get('/:queue/status', (req, res) => {
+
+    const { queue } = req.params;
+    let groupByStatus = getData();
+
+    const foundGroup = groupByStatus.filter((group) => group.queue === queue);
+    
+    res.send(foundGroup);
+});
+
+
 //POST request
 router.post('/', (req, res) => {
     let createGroup = req.body;
     let pars = getData();
+    req.body.queue = "tobesitted";
+    req.body.table = "null"
     pars.push(createGroup);
 
     let newData = JSON.stringify(pars);

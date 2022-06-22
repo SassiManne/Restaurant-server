@@ -24,7 +24,7 @@
         "name": "Menashe",
         "size": "1",
         "queue": "sitting",
-        "GroupSeqNo": "4444",
+        "GroupSeqNo": "5555",
         "table": "Corner 1"
     },
     {
@@ -33,5 +33,12 @@
         "queue": "awaitingbill",
         "GroupSeqNo": "5555",
         "table": null
+    },
+    {
+        "name": "Ben",
+        "size": "7",
+        "queue": "tobesitted",
+        "GroupSeqNo": "770",
+        "table": "null"
     }
 ]
