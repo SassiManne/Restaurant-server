@@ -1,6 +1,7 @@
 import express from "express";
 import * as fs from 'fs';
 
+
 const router = express.Router();
 
 router.use(express.json());
@@ -9,7 +10,11 @@ const getData = () => {
 
     let queues = fs.readFileSync('./dataBase/queues.json');
     let allQueues = JSON.parse(queues)
-    return allQueues
+
+    let tables = fs.readFileSync('./dataBase/tables.json');
+    let allTables = JSON.parse(tables)
+
+    return { allQueues, allTables }
 }
 
 
@@ -27,10 +32,11 @@ const dateTime = () => {
 router.get('/:queue/status', (req, res) => {
 
     const { queue } = req.params;
-    let groupByStatus = getData();
+    let groupByStatus = getData().allQueues;
 
     const foundGroup = groupByStatus.filter((group) => group.queue === queue);
-
+    
+    //// reverse sort to the size of groups
     function compare ( a, b ) {
         if ( +a.size > +b.size ){
             return -1;
@@ -42,8 +48,6 @@ router.get('/:queue/status', (req, res) => {
     }
     
     foundGroup.sort(compare);
-
-    
     res.send(foundGroup);
 
 });

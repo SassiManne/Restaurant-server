@@ -11,7 +11,7 @@ import queuesRoutes from './routes/queues.js';
 ///////set up the Server//////////
 
 const app = express();
-const PORT = 8080;
+const PORT = 5000;
 
 app.use(bodyParser.json());
 
