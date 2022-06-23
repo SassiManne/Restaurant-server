@@ -13,12 +13,48 @@ const getData = () => {
 }
 
 
+//////////get time and date ///////////
+const dateTime = () => {
+
+    var timeStamp = new Date().toLocaleString()
+
+    return timeStamp
+}
+
+
+/////////sit by priority////////////
+
+router.get('/:queue/status', (req, res) => {
+
+    const { queue } = req.params;
+    let groupByStatus = getData();
+
+    const foundGroup = groupByStatus.filter((group) => group.queue === queue);
+
+    function compare ( a, b ) {
+        if ( +a.size > +b.size ){
+            return -1;
+        }
+        if ( +a.size < +b.size ){
+            return 1;
+        }
+        return 0 ;
+    }
+    
+    foundGroup.sort(compare);
+
+    
+    res.send(foundGroup);
+
+});
+
+
 
 
 ///////////CRUD Functionality//////////
 
 //GET all queues
-router.get('/', (req, res) => {
+router.get('/:all', (req, res) => {
 
     let allQueues = getData()
     res.send(allQueues);
@@ -36,8 +72,8 @@ router.get('/:GroupSeqNo', (req, res) => {
 });
 
 
-//GET group by "queue status"
-router.get('/:queue/status', (req, res) => {
+// GET group by "queue status"  לא עובד ,צריך להבין למה מוציא את כל התורים ןלא כמצופה
+router.get('/queue', (req, res) => {
 
     const { queue } = req.params;
     let groupByStatus = getData();
@@ -53,13 +89,14 @@ router.post('/', (req, res) => {
     let createGroup = req.body;
     let pars = getData();
     req.body.queue = "tobesitted";
-    req.body.table = "null"
+    req.body.table = "null";
+    req.body.timeStamp = dateTime();
     pars.push(createGroup);
 
     let newData = JSON.stringify(pars);
     fs.writeFileSync('./dataBase/queues.json', newData);
 
-    return res.send(`group with the name ${req.body.GroupSeqNo} added to the database!`);
+    return res.send(`group with the GroupSeqNo: ${req.body.GroupSeqNo} added to the database!`);
 });
 
 
@@ -71,7 +108,7 @@ router.delete('/:GroupSeqNo', (req, res) => {
 
     fs.writeFileSync('./dataBase/queues.json', JSON.stringify(tempGroups));
 
-    return res.send(`the group with the number ${req.params.GroupSeqNo} deleted from the database!`);
+    return res.send(`the group with the GroupSeqNo: ${req.params.GroupSeqNo} deleted from the database!`);
 });
 
 
@@ -85,7 +122,7 @@ router.patch('/:GroupSeqNo', (req, res) => {
     tempGroups.push(req.body)
     fs.writeFileSync('./dataBase/queues.json', JSON.stringify(tempGroups));
 
-    return res.send(`the group with the name ${req.body.GroupSeqNo} updated from the database!`);
+    return res.send(`the group with the GroupSeqNo: ${req.body.GroupSeqNo} updated from the database!`);
 
 });
 

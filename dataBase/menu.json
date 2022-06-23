@@ -1,11 +1,6 @@
 [
     {
         "category": "starter",
-        "name": "ChoppedLiver",
-        "price": "7"
-    },
-    {
-        "category": "starter",
         "name": "EggSalad",
         "price": "2"
     },
@@ -53,5 +48,10 @@
         "category": "Soups",
         "name": "Borscht",
         "price": "56"
+    },
+    {
+        "category": "starter",
+        "name": "ChoppedLiver",
+        "price": "77"
     }
 ]
