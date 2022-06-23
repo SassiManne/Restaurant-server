@@ -35,6 +35,8 @@ router.get('/:tableName', (req, res) => {
 });
 
 
+
+
 //POST request
 router.post('/', (req, res) => {
     let table = req.body;
