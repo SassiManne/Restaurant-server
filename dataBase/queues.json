@@ -1,58 +1,58 @@
 [
     {
         "name": "Levy",
-        "size": "8",
-        "queue": "tobesitted",
+        "size": "1",
+        "queue": "sitting",
         "GroupSeqNo": "5556",
-        "table": null,
+        "table": "Window 1",
         "timeStamp": "23/06/2022, 12:01:28"
     },
     {
         "name": "Gad",
-        "size": "70",
-        "queue": "tobesitted",
+        "size": "2",
+        "queue": "sitting",
         "GroupSeqNo": "1111",
-        "table": null,
+        "table": "Corner2",
         "timeStamp": "23/06/2022, 11:01:28"
     },
     {
         "name": "Dan",
-        "size": "6",
-        "queue": "tobesitted",
+        "size": "4",
+        "queue": "sitting",
         "GroupSeqNo": "4343",
-        "table": null,
+        "table": "Corner1",
         "timeStamp": "23/06/2022, 10:01:28"
     },
     {
         "name": "Menashe",
-        "size": "5",
-        "queue": "sitting",
+        "size": "9",
+        "queue": "tobesitted",
         "GroupSeqNo": "5555",
-        "table": "Corner 1",
+        "table": null,
         "timeStamp": "23/06/2022, 14:01:28"
     },
     {
         "name": "Benjamin",
-        "size": "3",
+        "size": "4",
         "queue": "awaitingbill",
         "GroupSeqNo": "5555",
-        "table": null,
+        "table": "bar",
         "timeStamp": "23/06/2022, 13:20:28"
     },
     {
         "name": "Sassi",
-        "size": "1",
-        "queue": "tobesitted",
+        "size": "7",
+        "queue": "sitting",
         "GroupSeqNo": "770",
-        "table": "null",
+        "table": "bar",
         "timeStamp": "23/06/2022, 13:04:03"
     },
     {
         "name": "David",
-        "size": "2",
-        "queue": "tobesitted",
-        "GroupSeqNo": "770",
-        "table": "null",
+        "size": "5",
+        "queue": "sitting",
+        "GroupSeqNo": "777",
+        "table": "bar",
         "timeStamp": "23/06/2022, 13:07:03"
     }
 ]

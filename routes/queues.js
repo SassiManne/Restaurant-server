@@ -17,6 +17,16 @@ const getData = () => {
     return [allQueues, allTables]
 }
 
+const saveData = ( foundQueue, foundTable) => {
+    let queues = fs.writeFileSync('./dataBase/queues.json')
+    let updatedQueue = JSON.stringify(foundQueue)
+
+    let tables = fs.writeFileSync('./dataBase/tables.json')
+    let updatedTable = JSON.stringify(foundTable)
+
+
+}
+
 
 //////////get time and date ///////////
 const dateTime = () => {
@@ -33,16 +43,25 @@ router.get('/sitByPriority', (req, res) => {
 
     let [queueData, tableData] = getData();
 
-    const foundQueue = queueData.filter((group) => group.queue === "tobesitted");
-    const foundTable = tableData.filter((table) => table.GroupSeqNum === null);
+    let foundQueue = queueData.filter((group) => group.queue === "tobesitted");
+    let foundTable = tableData.filter((table) => table.GroupSeqNum === null);
 
+
+    /////if the restaurnt is fully booked
     if (!foundTable.length) {
         console.log("there is no table available")
         return res.send("there is no table available")
     }
 
 
-    /// reverse sort to the size of groups
+    ///// if the queue is empty
+    if (!foundQueue.length) {
+        console.log("no one wait")
+        return res.send("no one wait")
+    }
+
+
+    /////reverse sort to the size of groups
     function compareQueue(a, b) {
         if (+a.size > +b.size) {
             return -1;
@@ -52,23 +71,63 @@ router.get('/sitByPriority', (req, res) => {
         }
         return 0;
     }
+
+    ////// sort for capacity of the tables
     function compareTable(a, b) {
-        if (+a.capacity > +b.capacity) {
+        if (+a.capacity < +b.capacity) {
             return -1;
         }
-        if (+a.capacity < +b.capacity) {
+        if (+a.capacity > +b.capacity) {
             return 1;
         }
         return 0;
     }
+
     foundQueue.sort(compareQueue);
     foundTable.sort(compareTable);
+    
 
+    let matchTable, matchQueue, matchBreak;
+    
+    for (let i of foundQueue) {
+        for (let j of foundTable) {
 
-    res.send(foundQueue);
+            if (foundTable.at(-1).capacity < i.size){break}
+            if (j.capacity >= i.size) {
+                matchTable = j
+                matchQueue = i
+                matchBreak = true
+
+            }
+            if(matchBreak) break;
+
+        }
+        if(matchBreak) break;
+    }
+
+    if (!matchBreak) return res.send("no table for this group")
+
+    const tablesIndex = tableData.findIndex ((item) => {
+        return item.tableName === matchTable.tableName
+    });
+
+    const queueIndex = queueData.findIndex((item) => {
+        return item.GroupSeqNo === matchQueue.GroupSeqNo
+    });
+
+    tableData[tablesIndex].GroupSeqNum = queueData[queueIndex].GroupSeqNo
+    queueData[queueIndex].queue = "sitting"
+    queueData[queueIndex].table = tableData[tablesIndex].tableName
+
+    let updateQueue = JSON.stringify(queueData);
+    fs.writeFileSync('./dataBase/queues.json', updateQueue);
+
+    let updateTable = JSON.stringify(tableData);
+    fs.writeFileSync('./dataBase/tables.json', updateTable);
+
+    res.send(`group with the GroupSeqNo: ${queueData[queueIndex].GroupSeqNo} sat dwon!`);
 
 });
-
 
 
 
@@ -98,7 +157,7 @@ router.get('/queu/:queue', (req, res) => {
 router.get('/:GroupSeqNo', (req, res) => {
     const { GroupSeqNo } = req.params;
     let ourQueues = getData();
-    
+
     const foundGroup = ourQueues[0].find((group) => group.GroupSeqNo === GroupSeqNo);
 
     res.send(foundGroup);
