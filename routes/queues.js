@@ -24,15 +24,16 @@ const getTableData = () => {
     return allTables
 }
 
-// const saveData = ( foundQueue, foundTable) => {
-//     let queues = fs.writeFileSync('./dataBase/queues.json')
-//     let updatedQueue = JSON.stringify(foundQueue)
-
-//     let tables = fs.writeFileSync('./dataBase/tables.json')
-//     let updatedTable = JSON.stringify(foundTable)
+const getMenuData = () => {
 
 
-// }
+    let menu = fs.readFileSync('./dataBase/menu.json');
+    let allMenu = JSON.parse(menu)
+
+    return allMenu
+}
+
+
 
 
 //////////get time and date ///////////
@@ -58,8 +59,8 @@ router.get('/sitByPriority', (req, res) => {
 
     /////if the restaurnt is fully booked
     if (!foundTable.length) {
-        console.log("there is no table available")
-        return res.send("there is no table available")
+        console.log("No place to sit for any group")
+        return res.send("No place to sit for any group")
     }
 
 
@@ -71,13 +72,13 @@ router.get('/sitByPriority', (req, res) => {
 
 
     /////reverse sort to the size of groups
-    
-    function getMaxGroup (a ,b) {
+
+    function getMaxGroup(a, b) {
         return ((+b.size) - (+a.size));
     }
 
     /////sort time stamp
-    function sortByTime (a ,b) {
+    function sortByTime(a, b) {
         return ((+a.timeStamp) - (+b.timeStamp));
     }
 
@@ -87,38 +88,33 @@ router.get('/sitByPriority', (req, res) => {
     }
 
 
-
-    let sortMax =  foundQueue.sort(getMaxGroup);
-    let sortTime = sortMax.sort(sortByTime);
-    console.log(sortTime)
+    let sortMax = foundQueue.sort(getMaxGroup);
+    let sortGroupByTime = sortMax.sort(sortByTime);
 
     foundTable.sort(compareTable);
-    
 
-
-    
 
     let matchTable, matchQueue, matchBreak;
-    
-    for (let i of sortTime) {
+
+    for (let i of sortGroupByTime) {
         for (let j of foundTable) {
 
-            if (foundTable.at(-1).capacity < i.size){break}
+            if (foundTable.at(-1).capacity < i.size) { break }
             if (j.capacity >= i.size) {
                 matchTable = j
                 matchQueue = i
                 matchBreak = true
 
             }
-            if(matchBreak) break;
+            if (matchBreak) break;
 
         }
-        if(matchBreak) break;
+        if (matchBreak) break;
     }
 
     if (!matchBreak) return res.send("no table for this group")
 
-    const tablesIndex = tableData.findIndex ((item) => {
+    const tablesIndex = tableData.findIndex((item) => {
         return item.tableName === matchTable.tableName
     });
 
@@ -127,7 +123,7 @@ router.get('/sitByPriority', (req, res) => {
     });
 
     tableData[tablesIndex].GroupSeqNum = queueData[queueIndex].GroupSeqNo
-    queueData[queueIndex].queue = "sitting"
+    queueData[queueIndex].queue = "awaiting service"
     queueData[queueIndex].table = tableData[tablesIndex].tableName
 
     let updateQueue = JSON.stringify(queueData);
@@ -142,9 +138,99 @@ router.get('/sitByPriority', (req, res) => {
 
 
 
+//////////awaiting service/////////////
+
+router.get('/awaitingService', (req, res) => {
+
+    let queueData = getQueueData();
+    let toServe = queueData.filter((group) => group.queue === "awaitingservice");
+
+    if (!toServe.length) {
+        console.log("No group awaiting service")
+        return res.send("No group awaiting service")
+    }
+
+    function getMaxGroup(a, b) {
+        return ((+b.size) - (+a.size));
+    }
+
+    function sortByTime(a, b) {
+        return ((+a.timeStamp) - (+b.timeStamp));
+    }
+
+    let sortMax = toServe.sort(getMaxGroup);
+    let sortGroupByTime = sortMax.sort(sortByTime);
+
+    res.send(sortGroupByTime[0].GroupSeqNo + " " + sortGroupByTime[0].table)
+
+});
+
+
+//////////OrderToTable///////////
+
+router.patch('/OrderToTable/:GroupSeqNo', (req, res) => {
+    const { GroupSeqNo } = req.params;
+    
+    let allGroups = getQueueData();
+  
+    for (let group of allGroups) {
+        if (group.GroupSeqNo == GroupSeqNo) {
+            group.orders = req.body.orders
+            group.queue = "awaitingbill"
+            break
+        }
+    }
+
+    fs.writeFileSync('./dataBase/queues.json', JSON.stringify(allGroups));
+
+    return res.send(`the GroupSeqNo: ${GroupSeqNo}  ,choosed meals: ${req.body.orders} !`);
+
+});
+
+
+///////////order summary//////
+
+router.get('/orderSummary/:GroupSeqNo', (req, res) => {
+    const { GroupSeqNo } = req.params;
+
+    
+    let menuData = getMenuData();
+    
+    let allGroups = getQueueData();
+
+    for (let group of allGroups) {
+        if (group.GroupSeqNo == GroupSeqNo) {
+            let theDishesOrderd = group.orders;
+            var arrayLength = theDishesOrderd.length;
+            let totalInfo = [ ];
+            for (var i = 0; i < arrayLength; i++) {
+                const findDish = menuData.find((dish) => dish.name === theDishesOrderd[i]);
+                totalInfo.push(findDish.price)
+                console.log(theDishesOrderd)
+                console.log(totalInfo)
+                
+                
+            }
+            
+
+
+            
+        }
+
+
+    }
+
+    
+});
+
+
+
+
+
 ///////////CRUD Functionality//////////
 
 //GET all queues
+
 router.get('/all', (req, res) => {
 
     let allQueues = getQueueData();
@@ -153,7 +239,7 @@ router.get('/all', (req, res) => {
 
 
 // GET group by "queue status" 
-router.get('/queu/:queue', (req, res) => {
+router.get('/queue/:queue', (req, res) => {
 
     const { queue } = req.params;
     let groupByStatus = getQueueData();
@@ -183,7 +269,8 @@ router.post('/', (req, res) => {
     let pars = getQueueData();
     console.log(pars)
     req.body.queue = "tobesitted";
-    req.body.table = "null";
+    req.body.table = null;
+    req.body.orders = null;
     req.body.timeStamp = dateTime();
     pars.push(createGroup);
 

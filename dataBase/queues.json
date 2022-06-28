@@ -2,25 +2,23 @@
     {
         "name": "jhon",
         "size": "5",
-        "queue": "tobesitted",
+        "queue": "awaitingservice",
         "GroupSeqNo": "444",
-        "table": null,
+        "table": "Corner1",
+        "orders": null,
         "timeStamp": "27/06/2022, 17:13:41"
-    },
-    {
-        "name": "sassi",
-        "size": "5",
-        "queue": "tobesitted",
-        "GroupSeqNo": "777",
-        "table": null,
-        "timeStamp": "27/06/2022, 17:13:54"
     },
     {
         "name": "josef",
         "size": "7",
-        "queue": "tobesitted",
+        "queue": "awaitingbill",
         "GroupSeqNo": "333",
-        "table": null,
+        "table": "Corner7",
+        "orders": [
+            "ChickenSoup",
+            "Cholent",
+            "LaundryChicken"
+        ],
         "timeStamp": "27/06/2022, 17:14:27"
     },
     {
@@ -28,15 +26,8 @@
         "size": "5",
         "queue": "tobesitted",
         "GroupSeqNo": "999",
-        "table": "null",
+        "table": null,
+        "orders": null,
         "timeStamp": "28/06/2022, 11:28:57"
-    },
-    {
-        "name": "gad",
-        "size": "5",
-        "queue": "tobesitted",
-        "GroupSeqNo": "10",
-        "table": "null",
-        "timeStamp": "28/06/2022, 11:35:16"
     }
 ]

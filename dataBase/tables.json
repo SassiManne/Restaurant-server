@@ -2,7 +2,7 @@
     {
         "tableName": "Corner1",
         "capacity": "5",
-        "GroupSeqNum": null
+        "GroupSeqNum": "444"
     },
     {
         "tableName": "Corner2",
@@ -17,12 +17,12 @@
     {
         "tableName": "Window 2",
         "capacity": "5",
-        "GroupSeqNum": null
+        "GroupSeqNum": "777"
     },
     {
         "tableName": "Corner7",
         "capacity": "7",
-        "GroupSeqNum": null
+        "GroupSeqNum": "333"
     },
     {
         "tableName": "bar",
