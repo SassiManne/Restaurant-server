@@ -1,58 +1,42 @@
 [
     {
-        "name": "Levy",
-        "size": "1",
-        "queue": "sitting",
-        "GroupSeqNo": "5556",
-        "table": "Window 1",
-        "timeStamp": "23/06/2022, 12:01:28"
-    },
-    {
-        "name": "Gad",
-        "size": "2",
-        "queue": "sitting",
-        "GroupSeqNo": "1111",
-        "table": "Corner2",
-        "timeStamp": "23/06/2022, 11:01:28"
-    },
-    {
-        "name": "Dan",
-        "size": "4",
-        "queue": "sitting",
-        "GroupSeqNo": "4343",
-        "table": "Corner1",
-        "timeStamp": "23/06/2022, 10:01:28"
-    },
-    {
-        "name": "Menashe",
-        "size": "9",
-        "queue": "tobesitted",
-        "GroupSeqNo": "5555",
-        "table": null,
-        "timeStamp": "23/06/2022, 14:01:28"
-    },
-    {
-        "name": "Benjamin",
-        "size": "4",
-        "queue": "awaitingbill",
-        "GroupSeqNo": "5555",
-        "table": "bar",
-        "timeStamp": "23/06/2022, 13:20:28"
-    },
-    {
-        "name": "Sassi",
-        "size": "7",
-        "queue": "sitting",
-        "GroupSeqNo": "770",
-        "table": "bar",
-        "timeStamp": "23/06/2022, 13:04:03"
-    },
-    {
-        "name": "David",
+        "name": "jhon",
         "size": "5",
-        "queue": "sitting",
+        "queue": "tobesitted",
+        "GroupSeqNo": "444",
+        "table": null,
+        "timeStamp": "27/06/2022, 17:13:41"
+    },
+    {
+        "name": "sassi",
+        "size": "5",
+        "queue": "tobesitted",
         "GroupSeqNo": "777",
-        "table": "bar",
-        "timeStamp": "23/06/2022, 13:07:03"
+        "table": null,
+        "timeStamp": "27/06/2022, 17:13:54"
+    },
+    {
+        "name": "josef",
+        "size": "7",
+        "queue": "tobesitted",
+        "GroupSeqNo": "333",
+        "table": null,
+        "timeStamp": "27/06/2022, 17:14:27"
+    },
+    {
+        "name": "dan",
+        "size": "5",
+        "queue": "tobesitted",
+        "GroupSeqNo": "999",
+        "table": "null",
+        "timeStamp": "28/06/2022, 11:28:57"
+    },
+    {
+        "name": "gad",
+        "size": "5",
+        "queue": "tobesitted",
+        "GroupSeqNo": "10",
+        "table": "null",
+        "timeStamp": "28/06/2022, 11:35:16"
     }
 ]
