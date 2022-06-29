@@ -14,7 +14,6 @@ const getData = () => {
 
 
 
-
 ///////////CRUD Functionality//////////
 
 //GET all tables
@@ -33,7 +32,6 @@ router.get('/:tableName', (req, res) => {
     const foundTable = tableByName.find((table) => table.tableName === tableName);
     res.send(foundTable);
 });
-
 
 
 
@@ -77,6 +75,4 @@ router.patch('/:tableName', (req, res) => {
 });
 
     
-
-
 export default router;

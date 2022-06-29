@@ -41,10 +41,8 @@ const dateTime = () => {
 
     var timeStamp = new Date().toLocaleString()
 
-
     return timeStamp
 }
-
 
 /////////sit by priority////////////
 
@@ -93,9 +91,9 @@ router.get('/sitByPriority', (req, res) => {
 
     foundTable.sort(compareTable);
 
-
     let matchTable, matchQueue, matchBreak;
 
+    loop:
     for (let i of sortGroupByTime) {
         for (let j of foundTable) {
 
@@ -103,13 +101,10 @@ router.get('/sitByPriority', (req, res) => {
             if (j.capacity >= i.size) {
                 matchTable = j
                 matchQueue = i
-                matchBreak = true
-
+                matchBreak = true;
+                break loop;
             }
-            if (matchBreak) break;
-
         }
-        if (matchBreak) break;
     }
 
     if (!matchBreak) return res.send("no table for this group")
@@ -135,7 +130,6 @@ router.get('/sitByPriority', (req, res) => {
     res.send(`group with the GroupSeqNo: ${queueData[queueIndex].GroupSeqNo} sat dwon!`);
 
 });
-
 
 
 //////////awaiting service/////////////
@@ -170,9 +164,9 @@ router.get('/awaitingService', (req, res) => {
 
 router.patch('/OrderToTable/:GroupSeqNo', (req, res) => {
     const { GroupSeqNo } = req.params;
-    
+
     let allGroups = getQueueData();
-  
+
     for (let group of allGroups) {
         if (group.GroupSeqNo == GroupSeqNo) {
             group.orders = req.body.orders
@@ -193,38 +187,72 @@ router.patch('/OrderToTable/:GroupSeqNo', (req, res) => {
 router.get('/orderSummary/:GroupSeqNo', (req, res) => {
     const { GroupSeqNo } = req.params;
 
-    
+
     let menuData = getMenuData();
-    
+
     let allGroups = getQueueData();
 
-    for (let group of allGroups) {
-        if (group.GroupSeqNo == GroupSeqNo) {
-            let theDishesOrderd = group.orders;
-            var arrayLength = theDishesOrderd.length;
-            let totalInfo = [ ];
-            for (var i = 0; i < arrayLength; i++) {
-                const findDish = menuData.find((dish) => dish.name === theDishesOrderd[i]);
-                totalInfo.push(findDish.price)
-                console.log(theDishesOrderd)
-                console.log(totalInfo)
-                
-                
-            }
-            
+    const group = allGroups.find((group) => group.GroupSeqNo === GroupSeqNo);
 
+    let totalInfo = 0;
 
-            
-        }
+    for (var i = 0; i < group.orders.length; i++) {
 
+        const findDish = menuData.find((dish) => dish.name === group.orders[i]);
 
+        totalInfo += +findDish.price
     }
 
-    
+    group.orders.push("total: " + totalInfo)
+
+    res.send(group.orders);
+
 });
 
 
+/////////////Pay Table////////////////
+router.get('/pay/:GroupSeqNo', (req, res) => {
 
+    const { GroupSeqNo } = req.params;
+
+
+    let queueData = getQueueData();
+    let tableData = getTableData();
+    let menuData = getMenuData();
+
+
+    const group = queueData.find((group) => group.GroupSeqNo === GroupSeqNo);
+
+    const tablesIndex = tableData.findIndex((item) => {
+        return group.table === item.tableName
+    });
+
+    const queueIndex = queueData.findIndex((item) => {
+        return item.GroupSeqNo === GroupSeqNo
+    });
+
+    queueData[queueIndex].queue = "Done";
+    tableData[tablesIndex].GroupSeqNum = null;
+
+    let updateQueue = JSON.stringify(queueData);
+    fs.writeFileSync('./dataBase/queues.json', updateQueue);
+
+    let updateTable = JSON.stringify(tableData);
+    fs.writeFileSync('./dataBase/tables.json', updateTable);
+
+    let totalInfo = 0;
+
+    for (var i = 0; i < group.orders.length; i++) {
+
+        const findDish = menuData.find((dish) => dish.name === group.orders[i]);
+
+        totalInfo += +findDish.price
+    }
+
+    res.send("group name :" + group.name  + " ," + "table name :" + group.table + " ," + "total payment :" + totalInfo)
+
+
+});
 
 
 ///////////CRUD Functionality//////////
@@ -262,19 +290,17 @@ router.get('/:GroupSeqNo', (req, res) => {
 
 
 
-
 //POST request
 router.post('/', (req, res) => {
     let createGroup = req.body;
-    let pars = getQueueData();
-    console.log(pars)
+    let data = getQueueData();
     req.body.queue = "tobesitted";
     req.body.table = null;
     req.body.orders = null;
     req.body.timeStamp = dateTime();
-    pars.push(createGroup);
+    data.push(createGroup);
 
-    let newData = JSON.stringify(pars);
+    let newData = JSON.stringify(data);
     fs.writeFileSync('./dataBase/queues.json', newData);
 
     return res.send(`group with the GroupSeqNo: ${req.body.GroupSeqNo} added to the database!`);

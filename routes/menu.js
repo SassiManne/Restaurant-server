@@ -14,7 +14,6 @@ const getData = () => {
 
 
 
-
 ///////////CRUD Functionality//////////
 
 //GET all menu
